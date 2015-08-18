@@ -55,11 +55,13 @@ cv_bridge::CvImagePtr cv_ptr_;
 image_transport::Subscriber cam_sub_;
 ros::Publisher arMarkerPub_;
 ros::Publisher rvizMarkerPub_;
+ros::Publisher arPosePub_;
 ar_track_alvar_msgs::AlvarMarkers arPoseMarkers_;
 visualization_msgs::Marker rvizMarker_;
 tf::TransformListener *tf_listener;
 tf::TransformBroadcaster *tf_broadcaster;
 MarkerDetector<MarkerData> marker_detector;
+
 
 bool enableSwitched = false;
 bool enabled = true;
@@ -70,6 +72,7 @@ double max_track_error;
 std::string cam_image_topic; 
 std::string cam_info_topic; 
 std::string output_frame;
+int id_desired;
 
 void getCapCallback (const sensor_msgs::ImageConstPtr & image_msg);
 
@@ -102,6 +105,9 @@ void getCapCallback (const sensor_msgs::ImageConstPtr & image_msg)
             marker_detector.Detect(&ipl_image, cam, true, false, max_new_marker_error, max_track_error, CVSEQ, true);
 
 			arPoseMarkers_.markers.clear ();
+            arPoseMarkers_.header.stamp = image_msg->header.stamp;
+            arPoseMarkers_.header.frame_id = image_msg->header.frame_id;
+
 			for (size_t i=0; i<marker_detector.markers->size(); i++) 
 			{
 				//Get the pose relative to the camera
@@ -187,6 +193,15 @@ void getCapCallback (const sensor_msgs::ImageConstPtr & image_msg)
 
 				//Get the pose of the tag in the camera frame, then the output frame (usually torso)				
 				tf::Transform tagPoseOutput = CamToOutput * markerPose;
+                if (id == id_desired)
+                {
+                  geometry_msgs::PoseStamped pose_msg;
+                  pose_msg.header.frame_id = output_frame;
+                  pose_msg.header.stamp = image_msg->header.stamp;
+                  tf::poseTFToMsg (tagPoseOutput, pose_msg.pose);
+                  arPosePub_.publish(pose_msg);
+                }
+
 
 				//Create the pose marker messages
 				ar_track_alvar_msgs::AlvarMarker ar_pose_marker;
@@ -241,8 +256,11 @@ int main(int argc, char *argv[])
     output_frame = argv[6];
 	marker_detector.SetMarkerSize(marker_size);
 
-  if (argc > 7)
-    max_frequency = atof(argv[7]);
+    if (argc > 7)
+    {
+      id_desired = atoi(argv[7]);
+      max_frequency = atof(argv[8]);
+    }
 
   // Set dynamically configurable parameters so they don't get replaced by default values
   pn.setParam("marker_size", marker_size);
@@ -250,13 +268,18 @@ int main(int argc, char *argv[])
   pn.setParam("max_track_error", max_track_error);
 
   if (argc > 7)
+  {
+    pn.setParam("id_desired", id_desired);
     pn.setParam("max_frequency", max_frequency);
+  }
 
 	cam = new Camera(n, cam_info_topic);
 	tf_listener = new tf::TransformListener(n);
 	tf_broadcaster = new tf::TransformBroadcaster();
 	arMarkerPub_ = n.advertise < ar_track_alvar_msgs::AlvarMarkers > ("ar_pose_marker", 0);
 	rvizMarkerPub_ = n.advertise < visualization_msgs::Marker > ("visualization_marker", 0);
+    arPosePub_ = n.advertise < geometry_msgs::PoseStamped > ("ar_track_alvar/pose", 0);
+
 	
   // Prepare dynamic reconfiguration
   dynamic_reconfigure::Server < ar_track_alvar::ParamsConfig > server;

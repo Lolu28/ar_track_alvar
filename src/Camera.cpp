@@ -422,96 +422,96 @@ void Camera::SetOpenglProjectionMatrix(double proj_matrix[16], const int width, 
 
 void Camera::Undistort(PointDouble &point)
 {
-/*
-	// focal length
-	double ifx = 1./cvmGet(&calib_K, 0, 0);
-	double ify = 1./cvmGet(&calib_K, 1, 1);
 
-	// principal point
-	double cx = cvmGet(&calib_K, 0, 2);
-	double cy = cvmGet(&calib_K, 1, 2);
+//	// focal length
+//	double ifx = 1./cvmGet(&calib_K, 0, 0);
+//	double ify = 1./cvmGet(&calib_K, 1, 1);
 
-	// distortion coeffs
-	double* k = calib_D.data.db;
+//	// principal point
+//	double cx = cvmGet(&calib_K, 0, 2);
+//	double cy = cvmGet(&calib_K, 1, 2);
 
-	// compensate distortion iteratively
-	double x = (point.x - cx)*ifx, y = (point.y - cy)*ify, x0 = x, y0 = y;
-	for(int j = 0; j < 5; j++){
-		double r2 = x*x + y*y;
-		double icdist = 1./(1 + k[0]*r2 + k[1]*r2*r2);
-		double delta_x = 2*k[2]*x*y + k[3]*(r2 + 2*x*x);
-		double delta_y = k[2]*(r2 + 2*y*y) + 2*k[3]*x*y;
-		x = (x0 - delta_x)*icdist;
-		y = (y0 - delta_y)*icdist;
-	}
-	// apply compensation
-	point.x = x/ifx + cx;
-	point.y = y/ify + cy;
-*/
+//	// distortion coeffs
+//	double* k = calib_D.data.db;
+
+//	// compensate distortion iteratively
+//	double x = (point.x - cx)*ifx, y = (point.y - cy)*ify, x0 = x, y0 = y;
+//	for(int j = 0; j < 5; j++){
+//		double r2 = x*x + y*y;
+//		double icdist = 1./(1 + k[0]*r2 + k[1]*r2*r2);
+//		double delta_x = 2*k[2]*x*y + k[3]*(r2 + 2*x*x);
+//		double delta_y = k[2]*(r2 + 2*y*y) + 2*k[3]*x*y;
+//		x = (x0 - delta_x)*icdist;
+//		y = (y0 - delta_y)*icdist;
+//	}
+//	// apply compensation
+//	point.x = x/ifx + cx;
+//	point.y = y/ify + cy;
+
 }
 
 void Camera::Undistort(vector<PointDouble >& points)
 {
-/*
-	// focal length
-	double ifx = 1./cvmGet(&calib_K, 0, 0);
-	double ify = 1./cvmGet(&calib_K, 1, 1);
 
-	// principal point
-	double cx = cvmGet(&calib_K, 0, 2);
-	double cy = cvmGet(&calib_K, 1, 2);
+//	// focal length
+//	double ifx = 1./cvmGet(&calib_K, 0, 0);
+//	double ify = 1./cvmGet(&calib_K, 1, 1);
 
-	// distortion coeffs
-	double* k = calib_D.data.db;
+//	// principal point
+//	double cx = cvmGet(&calib_K, 0, 2);
+//	double cy = cvmGet(&calib_K, 1, 2);
 
-	for(unsigned int i = 0; i < points.size(); i++)
-	{
-		// compensate distortion iteratively
-		double x = (points[i].x - cx)*ifx, y = (points[i].y - cy)*ify, x0 = x, y0 = y;
-		for(int j = 0; j < 5; j++){
-			double r2 = x*x + y*y;
-			double icdist = 1./(1 + k[0]*r2 + k[1]*r2*r2);
-			double delta_x = 2*k[2]*x*y + k[3]*(r2 + 2*x*x);
-			double delta_y = k[2]*(r2 + 2*y*y) + 2*k[3]*x*y;
-			x = (x0 - delta_x)*icdist;
-			y = (y0 - delta_y)*icdist;
-		}
-		// apply compensation
-		points[i].x = x/ifx + cx;
-		points[i].y = y/ify + cy;
-	}
-*/
+//	// distortion coeffs
+//	double* k = calib_D.data.db;
+
+//	for(unsigned int i = 0; i < points.size(); i++)
+//	{
+//		// compensate distortion iteratively
+//		double x = (points[i].x - cx)*ifx, y = (points[i].y - cy)*ify, x0 = x, y0 = y;
+//		for(int j = 0; j < 5; j++){
+//			double r2 = x*x + y*y;
+//			double icdist = 1./(1 + k[0]*r2 + k[1]*r2*r2);
+//			double delta_x = 2*k[2]*x*y + k[3]*(r2 + 2*x*x);
+//			double delta_y = k[2]*(r2 + 2*y*y) + 2*k[3]*x*y;
+//			x = (x0 - delta_x)*icdist;
+//			y = (y0 - delta_y)*icdist;
+//		}
+//		// apply compensation
+//		points[i].x = x/ifx + cx;
+//		points[i].y = y/ify + cy;
+//	}
+
 }
 
 void Camera::Undistort(CvPoint2D32f& point)
 {
-/*
-	// focal length
-	double ifx = 1./cvmGet(&calib_K, 0, 0);
-	double ify = 1./cvmGet(&calib_K, 1, 1);
 
-	// principal point
-	double cx = cvmGet(&calib_K, 0, 2);
-	double cy = cvmGet(&calib_K, 1, 2);
+//	// focal length
+//	double ifx = 1./cvmGet(&calib_K, 0, 0);
+//	double ify = 1./cvmGet(&calib_K, 1, 1);
 
-	// distortion coeffs
-	double* k = calib_D.data.db;
+//	// principal point
+//	double cx = cvmGet(&calib_K, 0, 2);
+//	double cy = cvmGet(&calib_K, 1, 2);
+
+//	// distortion coeffs
+//	double* k = calib_D.data.db;
 
 
-	// compensate distortion iteratively
-	double x = (point.x - cx)*ifx, y = (point.y - cy)*ify, x0 = x, y0 = y;
-	for(int j = 0; j < 5; j++){
-		double r2 = x*x + y*y;
-		double icdist = 1./(1 + k[0]*r2 + k[1]*r2*r2);
-		double delta_x = 2*k[2]*x*y + k[3]*(r2 + 2*x*x);
-		double delta_y = k[2]*(r2 + 2*y*y) + 2*k[3]*x*y;
-		x = (x0 - delta_x)*icdist;
-		y = (y0 - delta_y)*icdist;
-	}
-	// apply compensation
-	point.x = float(x/ifx + cx);
-	point.y = float(y/ify + cy);
-*/
+//	// compensate distortion iteratively
+//	double x = (point.x - cx)*ifx, y = (point.y - cy)*ify, x0 = x, y0 = y;
+//	for(int j = 0; j < 5; j++){
+//		double r2 = x*x + y*y;
+//		double icdist = 1./(1 + k[0]*r2 + k[1]*r2*r2);
+//		double delta_x = 2*k[2]*x*y + k[3]*(r2 + 2*x*x);
+//		double delta_y = k[2]*(r2 + 2*y*y) + 2*k[3]*x*y;
+//		x = (x0 - delta_x)*icdist;
+//		y = (y0 - delta_y)*icdist;
+//	}
+//	// apply compensation
+//	point.x = float(x/ifx + cx);
+//	point.y = float(y/ify + cy);
+
 }
 
 /*
@@ -546,89 +546,89 @@ void Camera::Undistort(CvPoint2D32f& point)
 
 void Camera::Distort(vector<PointDouble>& points) 
 {
-/*
-	double u0 = cvmGet(&calib_K, 0, 2), v0 = cvmGet(&calib_K, 1, 2); // cx, cy
-	double fx = cvmGet(&calib_K, 0, 0), fy = cvmGet(&calib_K, 1, 1);
-	double _fx = 1./fx, _fy = 1./fy;
-	double* k = calib_D.data.db;
 
-	double k1 = k[0], k2 = k[1];
-	double p1 = k[2], p2 = k[3];
+//	double u0 = cvmGet(&calib_K, 0, 2), v0 = cvmGet(&calib_K, 1, 2); // cx, cy
+//	double fx = cvmGet(&calib_K, 0, 0), fy = cvmGet(&calib_K, 1, 1);
+//	double _fx = 1./fx, _fy = 1./fy;
+//	double* k = calib_D.data.db;
 
-	for(unsigned int i = 0; i < points.size(); i++)
-	{
-		// Distort
-		double y = (points[i].y - v0)*_fy;
-		double y2 = y*y;
-		double _2p1y = 2*p1*y;
-		double _3p1y2 = 3*p1*y2;
-		double p2y2 = p2*y2;
+//	double k1 = k[0], k2 = k[1];
+//	double p1 = k[2], p2 = k[3];
 
-		double x = (points[i].x - u0)*_fx;
-		double x2 = x*x;
-		double r2 = x2 + y2;
-		double d = 1 + (k1 + k2*r2)*r2;
+//	for(unsigned int i = 0; i < points.size(); i++)
+//	{
+//		// Distort
+//		double y = (points[i].y - v0)*_fy;
+//		double y2 = y*y;
+//		double _2p1y = 2*p1*y;
+//		double _3p1y2 = 3*p1*y2;
+//		double p2y2 = p2*y2;
 
-		points[i].x = fx*(x*(d + _2p1y) + p2y2 + (3*p2)*x2) + u0;
-		points[i].y = fy*(y*(d + (2*p2)*x) + _3p1y2 + p1*x2) + v0;
-	}
-*/
+//		double x = (points[i].x - u0)*_fx;
+//		double x2 = x*x;
+//		double r2 = x2 + y2;
+//		double d = 1 + (k1 + k2*r2)*r2;
+
+//		points[i].x = fx*(x*(d + _2p1y) + p2y2 + (3*p2)*x2) + u0;
+//		points[i].y = fy*(y*(d + (2*p2)*x) + _3p1y2 + p1*x2) + v0;
+//	}
+
 }
 
 void Camera::Distort(PointDouble & point) 
 {
-/*
-	double u0 = cvmGet(&calib_K, 0, 2), v0 = cvmGet(&calib_K, 1, 2); // cx, cy
-	double fx = cvmGet(&calib_K, 0, 0), fy = cvmGet(&calib_K, 1, 1);
-	double _fx = 1./fx, _fy = 1./fy;
-	double* k = calib_D.data.db;
 
-	double k1 = k[0], k2 = k[1];
-	double p1 = k[2], p2 = k[3];
+//	double u0 = cvmGet(&calib_K, 0, 2), v0 = cvmGet(&calib_K, 1, 2); // cx, cy
+//	double fx = cvmGet(&calib_K, 0, 0), fy = cvmGet(&calib_K, 1, 1);
+//	double _fx = 1./fx, _fy = 1./fy;
+//	double* k = calib_D.data.db;
 
-	// Distort
-	double y = (point.y - v0)*_fy;
-	double y2 = y*y;
-	double _2p1y = 2*p1*y;
-	double _3p1y2 = 3*p1*y2;
-	double p2y2 = p2*y2;
+//	double k1 = k[0], k2 = k[1];
+//	double p1 = k[2], p2 = k[3];
 
-	double x = (point.x - u0)*_fx;
-	double x2 = x*x;
-	double r2 = x2 + y2;
-	double d = 1 + (k1 + k2*r2)*r2;
+//	// Distort
+//	double y = (point.y - v0)*_fy;
+//	double y2 = y*y;
+//	double _2p1y = 2*p1*y;
+//	double _3p1y2 = 3*p1*y2;
+//	double p2y2 = p2*y2;
 
-	point.x = fx*(x*(d + _2p1y) + p2y2 + (3*p2)*x2) + u0;
-	point.y = fy*(y*(d + (2*p2)*x) + _3p1y2 + p1*x2) + v0;
-*/
+//	double x = (point.x - u0)*_fx;
+//	double x2 = x*x;
+//	double r2 = x2 + y2;
+//	double d = 1 + (k1 + k2*r2)*r2;
+
+//	point.x = fx*(x*(d + _2p1y) + p2y2 + (3*p2)*x2) + u0;
+//	point.y = fy*(y*(d + (2*p2)*x) + _3p1y2 + p1*x2) + v0;
+
 }
 
 void Camera::Distort(CvPoint2D32f & point) 
 {
-/*
-	double u0 = cvmGet(&calib_K, 0, 2), v0 = cvmGet(&calib_K, 1, 2); // cx, cy
-	double fx = cvmGet(&calib_K, 0, 0), fy = cvmGet(&calib_K, 1, 1);
-	double _fx = 1./fx, _fy = 1./fy;
-	double* k = calib_D.data.db;
 
-	double k1 = k[0], k2 = k[1];
-	double p1 = k[2], p2 = k[3];
+//	double u0 = cvmGet(&calib_K, 0, 2), v0 = cvmGet(&calib_K, 1, 2); // cx, cy
+//	double fx = cvmGet(&calib_K, 0, 0), fy = cvmGet(&calib_K, 1, 1);
+//	double _fx = 1./fx, _fy = 1./fy;
+//	double* k = calib_D.data.db;
 
-	// Distort
-	double y = (point.y - v0)*_fy;
-	double y2 = y*y;
-	double _2p1y = 2*p1*y;
-	double _3p1y2 = 3*p1*y2;
-	double p2y2 = p2*y2;
+//	double k1 = k[0], k2 = k[1];
+//	double p1 = k[2], p2 = k[3];
 
-	double x = (point.x - u0)*_fx;
-	double x2 = x*x;
-	double r2 = x2 + y2;
-	double d = 1 + (k1 + k2*r2)*r2;
+//	// Distort
+//	double y = (point.y - v0)*_fy;
+//	double y2 = y*y;
+//	double _2p1y = 2*p1*y;
+//	double _3p1y2 = 3*p1*y2;
+//	double p2y2 = p2*y2;
 
-	point.x = float(fx*(x*(d + _2p1y) + p2y2 + (3*p2)*x2) + u0);
-	point.y = float(fy*(y*(d + (2*p2)*x) + _3p1y2 + p1*x2) + v0);
-*/
+//	double x = (point.x - u0)*_fx;
+//	double x2 = x*x;
+//	double r2 = x2 + y2;
+//	double d = 1 + (k1 + k2*r2)*r2;
+
+//	point.x = float(fx*(x*(d + _2p1y) + p2y2 + (3*p2)*x2) + u0);
+//	point.y = float(fy*(y*(d + (2*p2)*x) + _3p1y2 + p1*x2) + v0);
+
 }
 
 void Camera::CalcExteriorOrientation(vector<CvPoint3D64f>& pw, vector<CvPoint2D64f>& pi,

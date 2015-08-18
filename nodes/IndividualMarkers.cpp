@@ -64,6 +64,7 @@ cv_bridge::CvImagePtr cv_ptr_;
 image_transport::Subscriber cam_sub_;
 ros::Subscriber cloud_sub_;
 ros::Publisher arMarkerPub_;
+ros::Publisher arPosePub_;
 ros::Publisher rvizMarkerPub_;
 ros::Publisher rvizMarkerPub2_;
 ar_track_alvar_msgs::AlvarMarkers arPoseMarkers_;
@@ -81,7 +82,7 @@ double max_track_error;
 std::string cam_image_topic; 
 std::string cam_info_topic; 
 std::string output_frame;
-
+int id_desired;
 
 //Debugging utility function
 void draw3dPoints(ARCloud::Ptr cloud, string frame, int color, int id, double rad)
@@ -355,6 +356,8 @@ void getPointCloudCallback (const sensor_msgs::PointCloud2ConstPtr &msg)
       }
 
       arPoseMarkers_.markers.clear ();
+      arPoseMarkers_.header.stamp = image_msg->header.stamp;
+      arPoseMarkers_.header.frame_id = image_msg->header.frame_id;
       for (size_t i=0; i<marker_detector.markers->size(); i++) 
 	{
 	  //Get the pose relative to the camera
@@ -442,6 +445,16 @@ void getPointCloudCallback (const sensor_msgs::PointCloud2ConstPtr &msg)
 	  //Get the pose of the tag in the camera frame, then the output frame (usually torso)				
 	  tf::Transform tagPoseOutput = CamToOutput * markerPose;
 
+      //Create geometry_msgs::pose msg
+      if (id == id_desired)
+      {
+        geometry_msgs::PoseStamped pose_msg;
+        pose_msg.header.frame_id = output_frame;
+        pose_msg.header.stamp = image_msg->header.stamp;
+        tf::poseTFToMsg (tagPoseOutput, pose_msg.pose);
+        arPosePub_.publish(pose_msg);
+      }
+
 	  //Create the pose marker messages
 	  ar_track_alvar_msgs::AlvarMarker ar_pose_marker;
 	  tf::poseTFToMsg (tagPoseOutput, ar_pose_marker.pose.pose);
@@ -497,20 +510,28 @@ int main(int argc, char *argv[])
   marker_detector.SetMarkerSize(marker_size);
 
   if (argc > 7)
-    max_frequency = atof(argv[7]);
+  {
+    id_desired = atoi(argv[7]);
+    max_frequency = atof(argv[8]);
+  }
 
   // Set dynamically configurable parameters so they don't get replaced by default values
   pn.setParam("marker_size", marker_size);
   pn.setParam("max_new_marker_error", max_new_marker_error);
   pn.setParam("max_track_error", max_track_error);
 
+
   if (argc > 7)
+  {
+    pn.setParam("id_desired", id_desired);
     pn.setParam("max_frequency", max_frequency);
+  }
 
   cam = new Camera(n, cam_info_topic);
   tf_listener = new tf::TransformListener(n);
   tf_broadcaster = new tf::TransformBroadcaster();
   arMarkerPub_ = n.advertise < ar_track_alvar_msgs::AlvarMarkers > ("ar_pose_marker", 0);
+  arPosePub_ = n.advertise < geometry_msgs::PoseStamped > ("ar_track_alvar/pose", 0);
   rvizMarkerPub_ = n.advertise < visualization_msgs::Marker > ("visualization_marker", 0);
   rvizMarkerPub2_ = n.advertise < visualization_msgs::Marker > ("ARmarker_points", 0);
 	
