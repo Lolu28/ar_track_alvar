@@ -5,8 +5,8 @@
         <arg name="cam_image_topic" default="/camera/image_rect" />
         <arg name="cam_info_topic" default="/camera/camera_info_rect" />
         <arg name="output_frame" default="/camera" />
-        <arg name="id_desired" default="1" />
-        <arg name="max_frequency" default="20" />
+        <arg name="id_desired" default="3" />
+        <arg name="max_frequency" default="50" />
 
 
 
